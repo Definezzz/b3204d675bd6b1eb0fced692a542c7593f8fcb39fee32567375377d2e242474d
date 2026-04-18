@@ -4953,61 +4953,7 @@ event_logger.on_aim_miss = function(e)
     end
 end
 
-event_logger.render = function()
-    if not visual.notifications:get() then
-        return
-    end
-
-    local base_x = 24
-    local base_y = 28
-    
-    local max_logs = 6
-    local display_time = 4.0
-    
-    for i = #event_logger.list, 1, -1 do
-        local log = event_logger.list[i]
-        local time_alive = globals.realtime() - log.time
-        
-        if time_alive > display_time or i > max_logs then
-            table.remove(event_logger.list, i)
-        else
-            log.y_offset = log.y_offset + ((i - 1) * 32 - log.y_offset) * globals.frametime() * 8
-            
-            local progress = 1
-            if time_alive < 0.3 then
-                progress = time_alive / 0.3
-            elseif time_alive > (display_time - 0.5) then
-                progress = 1 - ((time_alive - (display_time - 0.5)) / 0.5)
-            end
-            
-            log.alpha = log.alpha + (progress - log.alpha) * globals.frametime() * 5
-            
-            if log.alpha > 0.01 then
-                local alpha = log.alpha
-                local r, g, b = log.color.r, log.color.g, log.color.b
-                local current_y = base_y + log.y_offset
-                local brightness_correction = (25 - 25 * alpha) * -1
-                
-
-                local icon_text = "horrificmemories"
-                local icon = render_helpers:measures(8, "b", icon_text)
-                local text = render_helpers:measures(9, "bd", log.text)
-                
-                local icon_x = base_x
-                local text_x = base_x + icon[1] + 4
-                renderer.blur(icon_x, current_y - 12 - brightness_correction, icon[1], 25)
-                renderer.blur(text_x, current_y - 12 - brightness_correction, text[1] + 4, 25)
-                render_helpers:rect_horrificmemories(icon_x, current_y - 12 - brightness_correction, icon[1], 25, {0, 0, 0, alpha * 25.5}, 4, {r, g, b, alpha * 255}, 2)
-                render_helpers:rect_horrificmemories(text_x, current_y - 12 - brightness_correction, text[1] + 4, 25, {0, 0, 0, alpha * 25.5}, 4, {r, g, b, alpha * 255}, 2)
-                renderer.text(icon_x + 4, current_y - 5 - brightness_correction, 255, 255, 255, alpha * 255, "b", nil, icon[2])
-                renderer.text(text_x + 5, current_y - 4 - brightness_correction, 255, 255, 255, alpha * 255, "bd", nil, text[2])
-            end
-        end
-    end
-end
-
 client.set_event_callback('aim_fire', event_logger.on_aim_fire)
 client.set_event_callback('aim_hit', event_logger.on_aim_hit)
 client.set_event_callback('aim_miss', event_logger.on_aim_miss)
 client.set_event_callback('player_hurt', event_logger.on_player_hurt)
---client.set_event_callback('paint', event_logger.render)
