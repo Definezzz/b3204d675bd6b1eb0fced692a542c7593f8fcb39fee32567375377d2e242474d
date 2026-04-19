@@ -640,7 +640,7 @@ end
 
 local presets = {}
 
-presets.config_type = menu.group.main:combobox('Config type', {'Local', 'Staff'})
+presets.config_type = menu.group.main:combobox('Config type', {'Local', 'Admins'})
 presets.config_name = menu.group.main:textbox('Config name')
 presets.space1 = menu.group.main:label(' ')
 presets.list = menu.group.main:listbox('Configs', {'Empty configs list'})
@@ -656,9 +656,9 @@ configs.update_list = function()
         for _, configuration in pairs(configs.db) do
             table.insert(tmp, ("%s • %s"):format(configuration.name, configuration.author))
         end
-    elseif presets.config_type:get() == 'Staff' then
-        table.insert(tmp, "Default")
-        table.insert(tmp, "Coder")
+    elseif presets.config_type:get() == 'Admins' then
+        table.insert(tmp, "Recommended")
+        table.insert(tmp, "Xocu")
     end
     
     presets.list:update(#tmp ~= 0 and tmp or {"Empty configs list"})
@@ -669,9 +669,9 @@ presets.load = menu.group.main:button('Load', function()
     
     if presets.config_type:get() == 'Local' then
         configs.load(key)
-    elseif presets.config_type:get() == 'Staff' then
-        local staff_key = presets.list:get()
-        if staff_key == 1 then
+    elseif presets.config_type:get() == 'Admins' then
+        local Admins_key = presets.list:get()
+        if Admins_key == 1 then
 
             local coder_config = "horrificmemories::gs::eyJkYXRhIjp7ImFudGlhaW0iOnsiYnVpbGRlciI6W3siZW5hYmxlIjpmYWxzZSwieWF3X3R5cGUiOiIxODAiLCJwaXRjaCI6Ik9mZiIsImRlZmFhX2VuYiI6ZmFsc2UsImRlZl9waXRjaF9tb2RlIjoiU3RhdGljIiwiZGVmX3lhd19taW5fZ2VuIjotMjAsInlhd2Jhc2UiOiJBdCB0YXJnZXRzIiwiZGVmX3BpdGNoX21pbiI6MCwiZGVmX3lhd19tYXhfZ2VuIjoyMCwiZGVmX3BpdGNoX21heCI6MCwieWF3X2xyX2RlbGF5IjoyLCJkZWZfeWF3X2dlbmVyYXRpb24iOmZhbHNlLCJkZWZfeWF3X3NwZWVkIjo0LCJkZWZfcGl0Y2hfaGVpZ2h0X2Jhc2VkIjpmYWxzZSwiZGVmX3lhd19sZWZ0X3JpZ2h0IjpmYWxzZSwiZm9yY2VfZGVmZW5zaXZlIjpmYWxzZSwiZGVmX3BpdGNoX21pbl9tYXgiOmZhbHNlLCJkZWZfeWF3X3JpZ2h0IjowLCJkZWZfeWF3X2xlZnQiOjAsInlhdyI6MCwiZGVmX3lhd19vZmZzZXQiOjAsImRlZl95YXciOiJPZmYiLCJkZWZfcGl0Y2hfc3BlZWQiOjIsImRlZl9waXRjaCI6MCwieWF3bW9kaWZlciI6Ik9mZiIsImRlZ3JlZSI6MCwieWF3X2xlZnQiOjAsImNlbnRlcl9kZWxheSI6MiwieWF3X3JpZ2h0IjowfSx7ImVuYWJsZSI6dHJ1ZSwieWF3X3R5cGUiOiIxODAiLCJwaXRjaCI6IkRlZmF1bHQiLCJkZWZhYV9lbmIiOnRydWUsImRlZl9waXRjaF9tb2RlIjoiU3BpbiIsImRlZl95YXdfbWluX2dlbiI6LTIwLCJ5YXdiYXNlIjoiQXQgdGFyZ2V0cyIsImRlZl9waXRjaF9taW4iOjAsImRlZl95YXdfbWF4X2dlbiI6MjAsImRlZl9waXRjaF9tYXgiOjAsInlhd19scl9kZWxheSI6MiwiZGVmX3lhd19nZW5lcmF0aW9uIjpmYWxzZSwiZGVmX3lhd19zcGVlZCI6NCwiZGVmX3BpdGNoX2hlaWdodF9iYXNlZCI6ZmFsc2UsImRlZl95YXdfbGVmdF9yaWdodCI6dHJ1ZSwiZm9yY2VfZGVmZW5zaXZlIjp0cnVlLCJkZWZfcGl0Y2hfbWluX21heCI6ZmFsc2UsImRlZl95YXdfcmlnaHQiOjkwLCJkZWZfeWF3X2xlZnQiOi05MCwieWF3IjowLCJkZWZfeWF3X29mZnNldCI6NzksImRlZl95YXciOiIxODAiLCJkZWZfcGl0Y2hfc3BlZWQiOjYsImRlZl9waXRjaCI6LTI0LCJ5YXdtb2RpZmVyIjoiQ2VudGVyIiwiZGVncmVlIjotMzcsInlhd19sZWZ0IjowLCJjZW50ZXJfZGVsYXkiOjMsInlhd19yaWdodCI6MH0seyJlbmFibGUiOnRydWUsInlhd190eXBlIjoiMTgwIiwicGl0Y2giOiJEZWZhdWx0IiwiZGVmYWFfZW5iIjp0cnVlLCJkZWZfcGl0Y2hfbW9kZSI6IlNwaW4iLCJkZWZfeWF3X21pbl9nZW4iOi0yMCwieWF3YmFzZSI6IkF0IHRhcmdldHMiLCJkZWZfcGl0Y2hfbWluIjowLCJkZWZfeWF3X21heF9nZW4iOjIwLCJkZWZfcGl0Y2hfbWF4IjowLCJ5YXdfbHJfZGVsYXkiOjIsImRlZl95YXdfZ2VuZXJhdGlvbiI6ZmFsc2UsImRlZl95YXdfc3BlZWQiOjI2LCJkZWZfcGl0Y2hfaGVpZ2h0X2Jhc2VkIjpmYWxzZSwiZGVmX3lhd19sZWZ0X3JpZ2h0IjpmYWxzZSwiZm9yY2VfZGVmZW5zaXZlIjp0cnVlLCJkZWZfcGl0Y2hfbWluX21heCI6ZmFsc2UsImRlZl95YXdfcmlnaHQiOjAsImRlZl95YXdfbGVmdCI6MCwieWF3IjowLCJkZWZfeWF3X29mZnNldCI6MCwiZGVmX3lhdyI6IlNwaW4iLCJkZWZfcGl0Y2hfc3BlZWQiOjcsImRlZl9waXRjaCI6NTEsInlhd21vZGlmZXIiOiJDZW50ZXIiLCJkZWdyZWUiOi04MSwieWF3X2xlZnQiOjAsImNlbnRlcl9kZWxheSI6MiwieWF3X3JpZ2h0IjowfSx7ImVuYWJsZSI6dHJ1ZSwieWF3X3R5cGUiOiIxODAiLCJwaXRjaCI6IkRvd24iLCJkZWZhYV9lbmIiOmZhbHNlLCJkZWZfcGl0Y2hfbW9kZSI6IlN0YXRpYyIsImRlZl95YXdfbWluX2dlbiI6LTIwLCJ5YXdiYXNlIjoiQXQgdGFyZ2V0cyIsImRlZl9waXRjaF9taW4iOjAsImRlZl95YXdfbWF4X2dlbiI6MjAsImRlZl9waXRjaF9tYXgiOjAsInlhd19scl9kZWxheSI6MiwiZGVmX3lhd19nZW5lcmF0aW9uIjpmYWxzZSwiZGVmX3lhd19zcGVlZCI6NCwiZGVmX3BpdGNoX2hlaWdodF9iYXNlZCI6ZmFsc2UsImRlZl95YXdfbGVmdF9yaWdodCI6ZmFsc2UsImZvcmNlX2RlZmVuc2l2ZSI6ZmFsc2UsImRlZl9waXRjaF9taW5fbWF4IjpmYWxzZSwiZGVmX3lhd19yaWdodCI6MCwiZGVmX3lhd19sZWZ0IjowLCJ5YXciOjAsImRlZl95YXdfb2Zmc2V0IjowLCJkZWZfeWF3IjoiT2ZmIiwiZGVmX3BpdGNoX3NwZWVkIjoyLCJkZWZfcGl0Y2giOjAsInlhd21vZGlmZXIiOiJDZW50ZXIiLCJkZWdyZWUiOi00OCwieWF3X2xlZnQiOi0zMCwiY2VudGVyX2RlbGF5IjoyLCJ5YXdfcmlnaHQiOjM0fSx7ImVuYWJsZSI6dHJ1ZSwieWF3X3R5cGUiOiIxODAiLCJwaXRjaCI6Ik1pbmltYWwiLCJkZWZhYV9lbmIiOnRydWUsImRlZl9waXRjaF9tb2RlIjoiU3RhdGljIiwiZGVmX3lhd19taW5fZ2VuIjotMjAsInlhd2Jhc2UiOiJBdCB0YXJnZXRzIiwiZGVmX3BpdGNoX21pbiI6MCwiZGVmX3lhd19tYXhfZ2VuIjoyMCwiZGVmX3BpdGNoX21heCI6MCwieWF3X2xyX2RlbGF5IjoyLCJkZWZfeWF3X2dlbmVyYXRpb24iOmZhbHNlLCJkZWZfeWF3X3NwZWVkIjo0LCJkZWZfcGl0Y2hfaGVpZ2h0X2Jhc2VkIjpmYWxzZSwiZGVmX3lhd19sZWZ0X3JpZ2h0Ijp0cnVlLCJmb3JjZV9kZWZlbnNpdmUiOnRydWUsImRlZl9waXRjaF9taW5fbWF4IjpmYWxzZSwiZGVmX3lhd19yaWdodCI6LTkwLCJkZWZfeWF3X2xlZnQiOjkwLCJ5YXciOjAsImRlZl95YXdfb2Zmc2V0IjowLCJkZWZfeWF3IjoiMTgwIiwiZGVmX3BpdGNoX3NwZWVkIjoyLCJkZWZfcGl0Y2giOi04OSwieWF3bW9kaWZlciI6IkNlbnRlciIsImRlZ3JlZSI6LTQ2LCJ5YXdfbGVmdCI6MCwiY2VudGVyX2RlbGF5IjoyLCJ5YXdfcmlnaHQiOjB9LHsiZW5hYmxlIjp0cnVlLCJ5YXdfdHlwZSI6IjE4MCIsInBpdGNoIjoiRG93biIsImRlZmFhX2VuYiI6dHJ1ZSwiZGVmX3BpdGNoX21vZGUiOiJTdGF0aWMiLCJkZWZfeWF3X21pbl9nZW4iOi0yMCwieWF3YmFzZSI6IkF0IHRhcmdldHMiLCJkZWZfcGl0Y2hfbWluIjowLCJkZWZfeWF3X21heF9nZW4iOjIwLCJkZWZfcGl0Y2hfbWF4IjowLCJ5YXdfbHJfZGVsYXkiOjIsImRlZl95YXdfZ2VuZXJhdGlvbiI6ZmFsc2UsImRlZl95YXdfc3BlZWQiOjMwLCJkZWZfcGl0Y2hfaGVpZ2h0X2Jhc2VkIjpmYWxzZSwiZGVmX3lhd19sZWZ0X3JpZ2h0IjpmYWxzZSwiZm9yY2VfZGVmZW5zaXZlIjp0cnVlLCJkZWZfcGl0Y2hfbWluX21heCI6ZmFsc2UsImRlZl95YXdfcmlnaHQiOjE1OCwiZGVmX3lhd19sZWZ0IjotMTMxLCJ5YXciOjAsImRlZl95YXdfb2Zmc2V0IjotMTIwLCJkZWZfeWF3IjoiU3BpbiIsImRlZl9waXRjaF9zcGVlZCI6MiwiZGVmX3BpdGNoIjotODksInlhd21vZGlmZXIiOiJDZW50ZXIiLCJkZWdyZWUiOi02NiwieWF3X2xlZnQiOjAsImNlbnRlcl9kZWxheSI6MiwieWF3X3JpZ2h0IjowfSx7ImVuYWJsZSI6dHJ1ZSwieWF3X3R5cGUiOiIxODAiLCJwaXRjaCI6IkRvd24iLCJkZWZhYV9lbmIiOmZhbHNlLCJkZWZfcGl0Y2hfbW9kZSI6IlN0YXRpYyIsImRlZl95YXdfbWluX2dlbiI6LTIwLCJ5YXdiYXNlIjoiQXQgdGFyZ2V0cyIsImRlZl9waXRjaF9taW4iOjAsImRlZl95YXdfbWF4X2dlbiI6MjAsImRlZl9waXRjaF9tYXgiOjAsInlhd19scl9kZWxheSI6MiwiZGVmX3lhd19nZW5lcmF0aW9uIjpmYWxzZSwiZGVmX3lhd19zcGVlZCI6NCwiZGVmX3BpdGNoX2hlaWdodF9iYXNlZCI6ZmFsc2UsImRlZl95YXdfbGVmdF9yaWdodCI6ZmFsc2UsImZvcmNlX2RlZmVuc2l2ZSI6dHJ1ZSwiZGVmX3BpdGNoX21pbl9tYXgiOmZhbHNlLCJkZWZfeWF3X3JpZ2h0IjowLCJkZWZfeWF3X2xlZnQiOjAsInlhdyI6MCwiZGVmX3lhd19vZmZzZXQiOjAsImRlZl95YXciOiJPZmYiLCJkZWZfcGl0Y2hfc3BlZWQiOjIsImRlZl9waXRjaCI6MCwieWF3bW9kaWZlciI6IkNlbnRlciIsImRlZ3JlZSI6LTQzLCJ5YXdfbGVmdCI6MCwiY2VudGVyX2RlbGF5IjoyLCJ5YXdfcmlnaHQiOjB9LHsiZW5hYmxlIjp0cnVlLCJ5YXdfdHlwZSI6IjE4MCIsInBpdGNoIjoiRG93biIsImRlZmFhX2VuYiI6dHJ1ZSwiZGVmX3BpdGNoX21vZGUiOiJTdGF0aWMiLCJkZWZfeWF3X21pbl9nZW4iOi0yMCwieWF3YmFzZSI6IkF0IHRhcmdldHMiLCJkZWZfcGl0Y2hfbWluIjowLCJkZWZfeWF3X21heF9nZW4iOjIwLCJkZWZfcGl0Y2hfbWF4IjowLCJ5YXdfbHJfZGVsYXkiOjIsImRlZl95YXdfZ2VuZXJhdGlvbiI6ZmFsc2UsImRlZl95YXdfc3BlZWQiOjMwLCJkZWZfcGl0Y2hfaGVpZ2h0X2Jhc2VkIjpmYWxzZSwiZGVmX3lhd19sZWZ0X3JpZ2h0Ijp0cnVlLCJmb3JjZV9kZWZlbnNpdmUiOnRydWUsImRlZl9waXRjaF9taW5fbWF4IjpmYWxzZSwiZGVmX3lhd19yaWdodCI6MTQ1LCJkZWZfeWF3X2xlZnQiOi0xNDksInlhdyI6MCwiZGVmX3lhd19vZmZzZXQiOjAsImRlZl95YXciOiIxODAiLCJkZWZfcGl0Y2hfc3BlZWQiOjIsImRlZl9waXRjaCI6LTQ0LCJ5YXdtb2RpZmVyIjoiQ2VudGVyIiwiZGVncmVlIjotNjYsInlhd19sZWZ0IjowLCJjZW50ZXJfZGVsYXkiOjIsInlhd19yaWdodCI6MH0seyJlbmFibGUiOmZhbHNlLCJ5YXdfdHlwZSI6IjE4MCIsInBpdGNoIjoiT2ZmIiwiZGVmYWFfZW5iIjpmYWxzZSwiZGVmX3BpdGNoX21vZGUiOiJTdGF0aWMiLCJkZWZfeWF3X21pbl9nZW4iOi0yMCwieWF3YmFzZSI6IkF0IHRhcmdldHMiLCJkZWZfcGl0Y2hfbWluIjowLCJkZWZfeWF3X21heF9nZW4iOjIwLCJkZWZfcGl0Y2hfbWF4IjowLCJ5YXdfbHJfZGVsYXkiOjIsImRlZl95YXdfZ2VuZXJhdGlvbiI6ZmFsc2UsImRlZl95YXdfc3BlZWQiOjQsImRlZl9waXRjaF9oZWlnaHRfYmFzZWQiOmZhbHNlLCJkZWZfeWF3X2xlZnRfcmlnaHQiOmZhbHNlLCJmb3JjZV9kZWZlbnNpdmUiOmZhbHNlLCJkZWZfcGl0Y2hfbWluX21heCI6ZmFsc2UsImRlZl95YXdfcmlnaHQiOjAsImRlZl95YXdfbGVmdCI6MCwieWF3IjowLCJkZWZfeWF3X29mZnNldCI6MCwiZGVmX3lhdyI6Ik9mZiIsImRlZl9waXRjaF9zcGVlZCI6MiwiZGVmX3BpdGNoIjowLCJ5YXdtb2RpZmVyIjoiT2ZmIiwiZGVncmVlIjowLCJ5YXdfbGVmdCI6MCwiY2VudGVyX2RlbGF5IjoyLCJ5YXdfcmlnaHQiOjB9XSwib3B0aW9ucyI6WyJFZGdlIE9uIEZEIiwiU2FmZSBLbmlmZSIsIlNhZmUgWmV1cyJdLCJzdGF0ZSI6Ilx1MDAwYkdsb2JhbFxyIiwiYWFwaWNrIjoiQnVpbGRlciIsInNhZmVoZWFkIjp0cnVlLCJrZXlfbGVmdCI6WyJPbiBob3RrZXkiLDkwXSwiZmFzdGxhZGRlciI6dHJ1ZSwia2V5X3Jlc2V0IjpbIk9uIGhvdGtleSIsMF0sImtleV9mcmVlc3RhbmQiOlsiT24gaG90a2V5IiwxOF0sImFudGliYWNrc3RhYiI6dHJ1ZSwia2V5X3JpZ2h0IjpbIk9uIGhvdGtleSIsNjddfSwiYWltYm90Ijp7InVuc2FmZV9jaGFyZ2UiOnRydWUsInJhZ2VfZm9yY2VfYmFpbSI6WyJMZXRoYWwiXSwianVtcF9zY291dCI6dHJ1ZSwiYXV0b19vc19zdGF0ZXMiOlsiU2xvdyBXYWxrIiwiTW92ZS1Dcm91Y2giXSwicmFnZV9mb3JjZV9zYWZldHkiOnt9LCJhdXRvX29zIjp0cnVlLCJyYWdlX2ZvcmNlX3NhZmV0eV9taXNzIjoxLCJyZXNvbHZlciI6dHJ1ZSwiYXV0b19vc193ZWFwb25zIjpbIlNjb3V0IiwiRGVzZXJ0IEVhZ2xlIl0sInJlc29sdmVyX3R5cGUiOiJKaXR0ZXIiLCJyYWdlX2xvZ2ljIjpbIkZvcmNlIGJvZHkgYWltIiwiQXV0byBkZWxheSBzaG90Il0sInJhZ2VfZGVsYXlfc2hvdCI6WyJJbmFjY3VyYWN5IiwiRW5lbXkgZGVmZW5zaXZlIl0sInJhZ2VfZm9yY2VfYmFpbV9taXNzIjoxfSwidmlzdWFsIjp7IndhdGVybWFya19kaXNwbGF5IjpbIk5pY2siLCJLRCIsIkZQUyIsIlBpbmciLCJUaW1lIl0sInNjcmVlbl9pbmRpY2F0b3JzIjp0cnVlLCJub3RpZmljYXRpb25zX3R5cGUiOnt9LCJ3YXRlcm1hcmtfc3R5bGUiOiJHUyIsIndhdGVybWFya19nc19jb2xvciI6IiM0OUI2RkY2NCIsIm5vdGlmaWNhdGlvbnNfY29sb3IiOiIjQTBGMEE5RkYiLCJzY3JlZW5faW5kaWNhdG9yc19jIjoiI0ZGRkZGRkZGIiwic2NyZWVuX2luZGljYXRvcnNfZ2xvdyI6dHJ1ZSwibm90aWZpY2F0aW9ucyI6ZmFsc2UsIndhdGVybWFyayI6dHJ1ZSwid2F0ZXJtYXJrX2dzX2xpbmUiOiJTb2xpZCIsInNjb3BlX2dhcCI6MywiZGFtYWdlIjp0cnVlLCJzY29wZV9zaXplIjo2NywiYXNwZWN0X3ZhbCI6MTk5LCJkYW1hZ2VfZm9udCI6IkRlZmF1bHQiLCJkYW1hZ2VfY29sb3IiOiIjRkZGRkZGRkYiLCJ2bV9mb3YiOjM3LCJhc3BlY3RfcmF0aW8iOnRydWUsInZtX3oiOi0xMiwidm1feSI6LTQ5LCJzY29wZV9pbnZlcnQiOmZhbHNlLCJ2aWV3bW9kZWwiOnRydWUsInNjb3BlX2NvbG9yIjoiIzgxODE4MTc1Iiwidm1feCI6NCwic2NvcGVfbGluZXMiOnRydWUsIndhdGVybWFya19wb3NpdGlvbiI6IlRvcCBSaWdodCIsImFycm93c19jb2xvciI6IiNBMEYwQTlGRiIsImFycm93cyI6ZmFsc2UsInZtX2ZsaXBfa25pZmUiOnRydWV9LCJtaXNjIjp7ImJ1eWJvdF9wcmltYXJ5IjoiU2NvdXQiLCJidXlib3Rfc2Vjb25kYXJ5IjoiTm9uZSIsImNsYW50YWciOmZhbHNlLCJ0cmFzaHRhbGtfbGFuZ3VhZ2UiOiJSdXNzaWFuIiwiZmFzdF9sYWRkZXIiOnRydWUsInRyYXNodGFsayI6dHJ1ZSwiY29uc29sZV9maWx0ZXIiOnRydWUsImFuaW1hdGlvbl9icmVha2VyIjp7ImluX2Fpcl9zdGF0aWNfdmFsdWUiOjEwMCwiZWFydGhxdWFrZV92YWx1ZSI6MTAwLCJhZGp1c3RfbGVhbiI6MCwib25ncm91bmRfaml0dGVyX21pbl92YWx1ZSI6NTAsIm9uZ3JvdW5kX2xlZ3MiOiJKaXR0ZXIiLCJwaXRjaF9vbl9sYW5kIjpmYWxzZSwiaW5fYWlyX2xlZ3MiOiJNb29ud2FsayIsImVhcnRocXVha2UiOmZhbHNlLCJlbmFibGVkIjp0cnVlLCJvbmdyb3VuZF9qaXR0ZXJfbWF4X3ZhbHVlIjo1MH0sImJ1eWJvdF9lcXVpcG1lbnQiOlsiVGFzZXIiLCJLZXZsYXIiLCJIZWxtZXQiLCJEZWZ1c2VyIl0sImJ1eWJvdF9lbmFibGVkIjp0cnVlLCJidXlib3RfdXRpbGl0eSI6WyJIRSIsIlNtb2tlIiwiTW9sb3RvdiJdLCJ0cmFzaHRhbGtfZXZlbnRzIjpbIktpbGwiLCJEZWF0aCJdLCJidXlib3RfcGlzdG9sX2tldmxhciI6dHJ1ZX19LCJuYW1lIjoiR0FMQVhZIiwiYXV0aG9yIjoiYWRtaW4ifQ__"
             local success, decompiled = configs.decompile(coder_config)
@@ -754,7 +754,7 @@ presets.create = menu.group.main:button('Create New', function()
     if presets.config_type:get() == 'Local' then
         configs.create(presets.config_name:get(), loader_username, configs.data:save())
     else
-        print('[horrificmemories] Cannot create in Staff')
+        print('[horrificmemories] Cannot create in Admins')
     end
     
     configs.update_list()
@@ -4953,7 +4953,63 @@ event_logger.on_aim_miss = function(e)
     end
 end
 
+event_logger.render = function()
+    if not visual.notifications:get() then
+        return
+    end
+
+    local base_x = 24
+    local base_y = 28
+    
+    local max_logs = 6
+    local display_time = 4.0
+    
+    for i = #event_logger.list, 1, -1 do
+        local log = event_logger.list[i]
+        local time_alive = globals.realtime() - log.time
+        
+        if time_alive > display_time or i > max_logs then
+            table.remove(event_logger.list, i)
+        else
+            log.y_offset = log.y_offset + ((i - 1) * 32 - log.y_offset) * globals.frametime() * 8
+            
+            local progress = 1
+            if time_alive < 0.3 then
+                progress = time_alive / 0.3
+            elseif time_alive > (display_time - 0.5) then
+                progress = 1 - ((time_alive - (display_time - 0.5)) / 0.5)
+            end
+            
+            log.alpha = log.alpha + (progress - log.alpha) * globals.frametime() * 5
+            
+            if log.alpha > 0.01 then
+                local alpha = log.alpha
+                local r, g, b = log.color.r, log.color.g, log.color.b
+                local current_y = base_y + log.y_offset
+                local brightness_correction = (25 - 25 * alpha) * -1
+                
+
+                local icon_text = "horrificmemories"
+                local icon = render_helpers:measures(8, "b", icon_text)
+                local text = render_helpers:measures(9, "bd", log.text)
+                
+                local icon_x = base_x
+                local text_x = base_x + icon[1] + 4
+                renderer.blur(icon_x, current_y - 12 - brightness_correction, icon[1], 25)
+                renderer.blur(text_x, current_y - 12 - brightness_correction, text[1] + 4, 25)
+                render_helpers:rect_horrificmemories(icon_x, current_y - 12 - brightness_correction, icon[1], 25, {0, 0, 0, alpha * 25.5}, 4, {r, g, b, alpha * 255}, 2)
+                render_helpers:rect_horrificmemories(text_x, current_y - 12 - brightness_correction, text[1] + 4, 25, {0, 0, 0, alpha * 25.5}, 4, {r, g, b, alpha * 255}, 2)
+                renderer.text(icon_x + 4, current_y - 5 - brightness_correction, 255, 255, 255, alpha * 255, "b", nil, icon[2])
+                renderer.text(text_x + 5, current_y - 4 - brightness_correction, 255, 255, 255, alpha * 255, "bd", nil, text[2])
+            end
+        end
+    end
+end
+
 client.set_event_callback('aim_fire', event_logger.on_aim_fire)
 client.set_event_callback('aim_hit', event_logger.on_aim_hit)
 client.set_event_callback('aim_miss', event_logger.on_aim_miss)
 client.set_event_callback('player_hurt', event_logger.on_player_hurt)
+client.set_event_callback('paint', event_logger.render)
+
+print('horrificmemories loaded!')
